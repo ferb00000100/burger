@@ -1,19 +1,33 @@
 
-<ul>
-	{{#each burger_name}}
-		<li>
-			<p>
-				{{this.id}}. {{this.burger_name}}
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h2>Eat Da Burger</h2>
+		<ul>
+			{{#each burger_name}}
+				{{#unless devour}}
+			<li>
+				<p>
+					{{this.id}}. {{this.burger_name}}
+					{{this.devoured}}
+					<button class="devour" data-id="{{id}}" data-devour="{{devoured}}">
+						{{#if devoured}}YUMM{{else}}EAT UP!{{/if}}
+					</button>
+				</p>
+			</li>
+				{{/unless}}
+			{{/each}}
+		</ul>
 
-				<button data-planid="{{this.id}}" class="delplan">Delete Plan!</button>
-			</p>
-		</li>
-	{{/each}}
-</ul>
+		<form class="create-form">
+			<div class="form-group">
+				<label for="burger">Burgers</label>
+				<input type="text" id="burger" name="burger_name">
+			</div>
+			<p> Enter the Burger you want to eat and hit submit </p>
+			<button type="submit">Submit</button>
+		</form>
 
-<h2>Eat Da Burger</h2>
-<form id="eatdaburger" class="button-size">
-  <textarea type="text" name="plan"></textarea>
-  <button type="submit">Submit</button>
-</form>
-<p> Enter the Burger you want to eat and hit submit </p>
+	</div>
+
+</div>
+
