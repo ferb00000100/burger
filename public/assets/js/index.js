@@ -1,4 +1,5 @@
 // Make sure we wait to attach our handlers until the DOM is fully loaded.
+
 $(function() {
 	$(".devour").on("click", function(event) {
 		var id = $(this).data("id"); // This grabs data-id=id from index.handlebars and gets the ID for the DB
@@ -15,6 +16,7 @@ $(function() {
 			data: burgerState
 		}).then(
 			function() {
+				$('#burgerList').hide();  // Hide the burgers and move them once they are devoured
 				// Reload the page to get the updated list
 				location.reload();
 			}
@@ -22,24 +24,27 @@ $(function() {
 	});
 });
 
-$(".create-form").on("submit", function(event) {
-	// Make sure to preventDefault on a submit event.
-	event.preventDefault();
-	console.log($(this));
-	var newBurger = {
-		burger_name: $("#burger").val().trim(),
-		devoured: 0
-	};
-	console.log(newBurger);
-	// Send the POST request.
-	$.ajax("/api/burgers", {
-		type: "POST",
-		data: newBurger
-	}).then(
-		function() {
-			console.log("created new burger");
-			// Reload the page to get the updated list
-			location.reload();
-		}
-	);
+$(function() {
+	$(".createBurger").on("click", function (event) {
+		// Make sure to preventDefault on a submit event.
+		event.preventDefault();
+		// console.log(event);
+		// console.log($(this));
+		var newBurger = {
+			burger_name: $("#burger").val().trim(),
+			devoured: 0
+		};
+		console.log(newBurger);
+		// Send the POST request.
+		$.ajax("/api/burgers", {
+			type: "POST",
+			data: newBurger
+		}).then(
+			function () {
+				console.log("created new burger");
+				// Reload the page to get the updated list
+				location.reload();
+			}
+		);
+	});
 });

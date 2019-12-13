@@ -21,39 +21,52 @@ function objToSql(object) {
 	return arr.toString();
 }
 
+function objToString (object) {
+	var arr = [];
+	for (var key in object) {
+		var value = object[key];
+		// check to skip hidden properties
+		if (Object.hasOwnProperty.call(object, key)) {
+			if (typeof value === "string" && value.indexOf(" ") >= 0) {
+				value = "'" + value + "'";
+			}
+			arr.push(value);
+		}
+	}
+	return arr.toString();
+}
+
+
 var orm = {
 	all: function (tableInput, cb) {
 		let queryString = "SELECT * FROM " + tableInput;
 		connection.query(queryString, function (err, results) {
 			if (err) throw err;
-			// console.log(results);
 			cb(results);
 		});
 	},
 	create: function(table, cols, vals, cb) {
-		console.log("IN CREATE ORM FUNCTION");
-
+		console.log("IN ORM FUNCTION");
+		newVals = objToString(vals);
 		var queryString = "INSERT INTO " + table;
 
 		queryString += " (";
 		queryString += cols.toString();
 		queryString += ") ";
 		queryString += "VALUES (";
-		queryString += printQuestionMarks(vals.length);
-		queryString += ") ";
+		queryString += newVals;
+		queryString += ");";
 
 		console.log(queryString);
-
-		connection.query(queryString, vals, function(err, result) {
+		connection.query(queryString, ');', function(err, result) {
 			if (err) {
 				throw err;
 			}
-
 			cb(result);
 		});
 	},
 	update: function(table, objColVals, condition, cb) {
-		// console.log("objColVals are ",objColVals);
+		console.log("objColVals are ",objColVals);
 		var queryString = "UPDATE " + table;
 
 		queryString += " SET ";
@@ -61,12 +74,11 @@ var orm = {
 		queryString += " WHERE ";
 		queryString += condition;
 
-		// console.log(queryString);
+		console.log(queryString);
 		connection.query(queryString, function(err, result) {
 			if (err) {
 				throw err;
 			}
-			// console.log(result);
 			cb(result);
 		});
 	},
