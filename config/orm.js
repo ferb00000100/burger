@@ -1,15 +1,10 @@
 var connection = require("./connection.js");
 
-// Helper function to convert object key/value pairs to SQL syntax
 function objToSql(object) {
 	var arr = [];
-	// objColVals are { devoured: 1 }
-	// loop through the keys and push the key/value as a string int arr
 	for (var key in object) {
 		var value = object[key];
-		// check to skip hidden properties
 		if (Object.hasOwnProperty.call(object, key)) {
-			// if string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
 			if (typeof value === "string" && value.indexOf(" ") >= 0) {
 				value = "'" + value + "'";
 			}
@@ -25,7 +20,6 @@ function objToString (object) {
 	var arr = [];
 	for (var key in object) {
 		var value = object[key];
-		// check to skip hidden properties
 		if (Object.hasOwnProperty.call(object, key)) {
 			if (typeof value === "string" && value.indexOf(" ") >= 0) {
 				value = "'" + value + "'";
@@ -36,7 +30,6 @@ function objToString (object) {
 	return arr.toString();
 }
 
-
 var orm = {
 	all: function (tableInput, cb) {
 		let queryString = "SELECT * FROM " + tableInput;
@@ -46,7 +39,6 @@ var orm = {
 		});
 	},
 	create: function(table, cols, vals, cb) {
-		console.log("IN ORM FUNCTION");
 		newVals = objToString(vals);
 		var queryString = "INSERT INTO " + table;
 
@@ -57,7 +49,6 @@ var orm = {
 		queryString += newVals;
 		queryString += ");";
 
-		console.log(queryString);
 		connection.query(queryString, ');', function(err, result) {
 			if (err) {
 				throw err;
@@ -66,7 +57,6 @@ var orm = {
 		});
 	},
 	update: function(table, objColVals, condition, cb) {
-		console.log("objColVals are ",objColVals);
 		var queryString = "UPDATE " + table;
 
 		queryString += " SET ";
@@ -74,7 +64,6 @@ var orm = {
 		queryString += " WHERE ";
 		queryString += condition;
 
-		console.log(queryString);
 		connection.query(queryString, function(err, result) {
 			if (err) {
 				throw err;

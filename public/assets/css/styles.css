@@ -1,14 +1,14 @@
-/*h6 {*/
-/*    margin-left: 800px;*/
-/*}*/
 
 ul {
     list-style-type: none;
 }
- button {
-     width: 100%;
+ .submitButton {
+     width: 20%;
  }
 
+ .devourButton {
+     width: 100%;
+ }
  .devourBurger {
-alignment: right;
+    alignment: right;
  }
